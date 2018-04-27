@@ -75,7 +75,8 @@ int main(int argc, char** argv)
 		while(true) {
 			for(int i = 0; i < numRunner; i++) {
 				if(runner[i].checked) continue;
-				unsigned long long value = runTime + (unsigned long long) (runner[i].diff - runner[i].firstNatural);
+				unsigned long long value = runTime - (unsigned long long) (runner[i].firstNatural);
+				//unsigned long long value = runTime + (unsigned long long) (runner[i].diff - runner[i].firstNatural);
 				if(value % runner[i].diff != 0) {
 					hasError = true;
 				} else {
