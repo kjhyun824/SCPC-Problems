@@ -15,8 +15,6 @@
  *
  * =====================================================================================
  */
-
-
 #include <iostream>
 #include <algorithm>
 #include <string>
@@ -24,25 +22,26 @@
 using namespace std;
 
 vector<int> pList;
-bool pelindromes[10001];
-bool twosums[20002];
-int Answer;
+bool pelindromes[10010];
+bool twosums[20010];
 
 bool isPelindrome(int num) {
     string _num = to_string(num);
-    string rev = _num;
-    reverse(_num.begin(), _num.end());
-    if(_num == rev) return true;
+    if(_num == string(_num.rbegin(), _num.rend())) return true;
     else return false;
 }
 
 void getAll() {
-    for(int i = 1; i <= 10000; i++) {
+    for(int i = 0; i <= 10000; i++) {
         pelindromes[i] = false;
         if(isPelindrome(i)) {
             pelindromes[i] = true;
             pList.push_back(i);
         }
+    }
+
+    for(int i = 0; i < 20002; i++) {
+        twosums[i] = false;
     }
     
     for(int i = 0; i < pList.size(); i++) {
@@ -58,18 +57,19 @@ int main(int argc, char** argv)
 	cin >> T;
 
     getAll();
-	for(test_case = 0; test_case  < T; test_case++)
-	{
+
+	for(test_case = 0; test_case  < T; test_case++) {
         int targetNum;
         cin >> targetNum;
 
 		cout << "Case #" << test_case+1 << endl;
-        if(pelindromes[targetNum]) {
+
+        if(pelindromes[targetNum]) { // Pelindrom itself
 		    cout << "1 " << targetNum << endl;
-        } else if(twosums[targetNum]) {
+        } else if(twosums[targetNum]) { // Available for two numbers sum
             int res[2];
             for(int i = 0; i < pList.size(); i++) {
-                if(pelindromes[targetNum - pList[i]]) {
+                if(targetNum > pList[i] && pelindromes[targetNum - pList[i]]) {
                     res[0] = pList[i];
                     res[1] = targetNum - pList[i];
                     break;
@@ -82,7 +82,7 @@ int main(int argc, char** argv)
             int res[3];
             bool isPossible = false;
             for(int i = 0; i < pList.size(); i++) {
-                if(twosums[targetNum - pList[i]]) {
+                if(targetNum > pList[i] && twosums[targetNum - pList[i]]) {
                     res[0] = pList[i];
                     targetNum -= pList[i];
                     isPossible = true;
@@ -96,7 +96,7 @@ int main(int argc, char** argv)
             }
 
             for(int i = 0; i < pList.size(); i++) {
-                if(pelindromes[targetNum - pList[i]]) {
+                if(targetNum > pList[i] && pelindromes[targetNum - pList[i]]) {
                     res[1] = pList[i];
                     res[2] = targetNum - pList[i];
                     break;
