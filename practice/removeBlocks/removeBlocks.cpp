@@ -19,8 +19,8 @@
 #include <iostream>
 using namespace std;
 
-int Answer;
-int blocks[100000];
+int Answer, numRow;
+int blocks[100002];
 
 int main(int argc, char** argv)
 {
@@ -29,10 +29,32 @@ int main(int argc, char** argv)
 	for(test_case = 0; test_case  < T; test_case++)
 	{
 		Answer = 0;
-        int numRow;
         cin >> numRow;
-        for(int i = 0; i < numRow; i++) {
+
+        blocks[0] = 0;
+        blocks[numRow+1] = 0;
+        for(int i = 1; i <= numRow; i++) {
             cin >> blocks[i];
+        }
+
+        int left[numRow+2], right[numRow+2];
+        left[0] = 0;
+        right[numRow+1] = 0;
+
+        for(int i = 1; i <= numRow; i++) {
+            left[i] = min(left[i-1] + 1, blocks[i]);
+        }
+
+        for(int i = numRow; i >= 1; i--) {
+            right[i] = min(right[i+1] + 1, blocks[i]);
+        }
+
+        for(int i = 1; i<= numRow; i++) {
+            int minimum = min(left[i], right[i]);
+
+            if(Answer < minimum) {
+                Answer = minimum;
+            }
         }
 
 		cout << "Case #" << test_case+1 << endl;
